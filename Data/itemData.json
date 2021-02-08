@@ -1,0 +1,20 @@
+{
+    "Health Potion": {
+        "ItemCategory": "Consumable",
+        "AddHealth": 20,
+        "StackSize": 5,
+        "Description": "Хилки для реса хп"
+    },
+    "Soul": {
+        "ItemCategory": "Resource",
+        "StackSize": 99999,
+        "Description": "Души для прокачки"
+    },
+    "Sword": {
+        "ItemCategory": "Weapon",
+        "StackSize": 1,
+        "ItemAttack": 5,
+        "ItemSpeed": 0.75,
+        "Description": "Души для прокачки"
+    }
+}
