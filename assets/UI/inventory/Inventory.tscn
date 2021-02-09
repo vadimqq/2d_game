@@ -756,7 +756,7 @@ size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DoubleEdgedBackground/TextureRect/VBoxContainer/MainElements/Armor"]
 margin_right = 209.0
-margin_bottom = 442.0
+margin_bottom = 636.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -1209,7 +1209,7 @@ size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DoubleEdgedBackground/TextureRect/VBoxContainer/MainElements/Crafting"]
 margin_right = 138.0
-margin_bottom = 442.0
+margin_bottom = 636.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -1662,7 +1662,7 @@ size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DoubleEdgedBackground/TextureRect/VBoxContainer/MainElements/Consum"]
 margin_right = 103.0
-margin_bottom = 442.0
+margin_bottom = 636.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -2115,7 +2115,7 @@ size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DoubleEdgedBackground/TextureRect/VBoxContainer/MainElements/Other"]
 margin_right = 81.0
-margin_bottom = 442.0
+margin_bottom = 636.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -2859,9 +2859,9 @@ texture_hover = ExtResource( 10 )
 
 [node name="Compare" type="TextureRect" parent="DoubleEdgedBackground/TextureRect/VBoxContainer/MainElements/ItemInspector/Buttons"]
 margin_left = 104.0
-margin_top = 19.0
+margin_top = 20.0
 margin_right = 284.0
-margin_bottom = 79.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 180, 60 )
 size_flags_vertical = 4
 texture = ExtResource( 6 )

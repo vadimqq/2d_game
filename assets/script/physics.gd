@@ -6,7 +6,7 @@ var MaxFallSpeed = 500
 var Accel = 20
 var Motion = Vector2()
 var MaxSpeed = 200
-var JumpForce = 400
+var JumpForce = 600
 
 
 func _physics_process(delta):

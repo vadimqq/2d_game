@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/background3.png-caee8b6a20e134600fe3fa45cf8026d9.stex"
+path="res://.import/Knight-Walk-Sheet.png-e621f72bb242ce77f8a20729063b6ec5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/world/sprite/background3.png"
-dest_files=[ "res://.import/background3.png-caee8b6a20e134600fe3fa45cf8026d9.stex" ]
+source_file="res://assets/enemies/darkKnight/sprites/Knight-Walk-Sheet.png"
+dest_files=[ "res://.import/Knight-Walk-Sheet.png-e621f72bb242ce77f8a20729063b6ec5.stex" ]
 
 [params]
 
