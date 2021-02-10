@@ -5,6 +5,7 @@ onready var animation = get_node("AnimationPlayer")
 onready var playerDetectionZone = get_node("PlayerDetectionZone")
 onready var playerAttackZone = get_node("PlayerAttackZone")
 onready var stats = get_node("Stats")
+onready var hitbox = get_node("hitbox")
 
 enum {
 	ATTACK,
@@ -16,6 +17,10 @@ enum {
 
 var state = IDLE
 var CD_attack = false
+
+
+func _ready():
+	hitbox.damage = stats.Damage
 
 func _process(delta):
 	_MotionStop(stats.MaxSpeed)
@@ -53,11 +58,15 @@ func chase_state():
 		var direction = (player.global_position - global_position).normalized()
 		if direction.x > 0:
 			_MotionRight()
-			sprite.get_node("run").flip_h = false
+			sprite.scale.x = 1
+			hitbox.scale.x = 1
+			playerDetectionZone.scale.x = 1
 			animation.play("run")
 		if direction.x < 0:
 			_MotionLeft()
-			sprite.get_node("run").flip_h = true
+			sprite.scale.x = -1
+			hitbox.scale.x = -1
+			playerDetectionZone.scale.x = -1
 			animation.play("run")
 	else:
 		state = IDLE
@@ -74,10 +83,8 @@ func attack_state():
 	if player != null:
 		var direction = (player.global_position - global_position).normalized()
 		if direction.x > 0:
-			sprite.get_node("attack").flip_h = false
 			animation.play("attack")
 		if direction.x < 0:
-			sprite.get_node("attack").flip_h = true
 			animation.play("attack")
 	else:
 		state = IDLE

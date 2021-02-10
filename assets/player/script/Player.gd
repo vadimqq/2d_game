@@ -4,6 +4,7 @@ onready var animation = get_node("hero_1/AnimationPlayer")
 onready var sprite = get_node("hero_1")
 onready var collisionBody = get_node("CollisionShape2D")
 onready var stats = get_node("Stats")
+onready var HP = stats.MaxHealth
 onready var hitbox = get_node("hitboxPivot")
 onready var sword = get_node("hitboxPivot/hitbox")
 
@@ -11,30 +12,34 @@ enum {
 	MOVE,
 	JUMP,
 	FLY,
-	FALL,
 	ATTACK_1,
 	ATTACK_2,
 	DASH
 }
+enum {
+	REGEN,
+	WASTE
+}
 
 var state = MOVE
+var endurence_state = REGEN
 var dashSpeed = 500
 var endurence = 100
-
 signal change_endurence
+signal change_HP
 
 func _ready():
 	sword.damage = stats.Damage
 
 func _process(delta):
 	_MotionStop(stats.MaxSpeed)
+	if endurence < 100:
+		emit_signal("change_endurence", endurence)
 	match state:
 		MOVE:
 			move_state()
 		JUMP:
 			jump_state()
-		FALL:
-			pass
 		ATTACK_1:
 			attack_1_state()
 		ATTACK_2:
@@ -43,9 +48,13 @@ func _process(delta):
 			dash_state()
 		FLY:
 			fly_state()
+	match endurence_state:
+		REGEN:
+			regen_endurence_state()
+		WASTE:
+			waste_endurence_state()
 #Функции состояний игрока
 func move_state():
-	reg_endurence()
 	if Input.is_action_pressed("run_right"):
 		_MotionRight()
 		animation.play("run")
@@ -63,9 +72,11 @@ func move_state():
 			state = JUMP
 	if Input.is_action_just_pressed("dash"):
 		if endurence > 20:
+			waste_endurence(20)
 			state = DASH
 	if Input.is_action_just_pressed("attack"):
 		if endurence > 30:
+			waste_endurence(30)
 			state = ATTACK_1
 
 func dash_state():
@@ -104,10 +115,18 @@ func attack_1_state():
 func attack_2_state():
 	animation.play("attack_2")
 
+func waste_endurence_state():
+	yield(get_tree().create_timer(2.0), "timeout")
+	endurence_state = REGEN
+
+func regen_endurence_state():
+	if endurence < 100:
+		endurence += 1
+	elif endurence >= 100:
+		endurence = 100
+
 #Вызовы в конец анимаци
 func dash_finished():
-	endurence -= 20
-	emit_signal("change_endurence", endurence)
 	state = MOVE
 
 func jump_finished():
@@ -116,10 +135,9 @@ func jump_finished():
 
 #Система боя
 func attack_1_finished():
-	endurence -= 30
-	emit_signal("change_endurence", endurence)
 	if Input.is_action_pressed("attack"):
 		if endurence > 60:
+			waste_endurence(60)
 			state = ATTACK_2
 		else:
 			state = MOVE
@@ -127,15 +145,15 @@ func attack_1_finished():
 		state = MOVE
 
 func attack_2_finished():
-	endurence -= 60
-	emit_signal("change_endurence", endurence)
 	state = MOVE
 
-#Востановление выносливости
-func reg_endurence():
-	if endurence < 100:
-		yield(get_tree().create_timer(1.0), "timeout")
-		endurence += 0.5
-		emit_signal("change_endurence", endurence)
-	if endurence > 100:
-		endurence = 100
+func waste_endurence(value):
+	endurence -= value
+	endurence_state = WASTE
+
+func _on_hurtBox_area_entered(area):
+	HP -= area.damage
+	var value_percent = (1000 / stats.MaxHealth * HP) / 10
+	emit_signal("change_HP", value_percent)
+
+

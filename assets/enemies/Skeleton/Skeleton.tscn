@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://assets/enemies/Skeleton/sprite/Skeleton Dead.png" type="Texture" id=1]
 [ext_resource path="res://assets/enemies/Skeleton/sprite/Skeleton Idle.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/enemies/Skeleton/script/PlayerDetectionZone.gd" type="Script" id=7]
 [ext_resource path="res://assets/script/Stats.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/enemies/Skeleton/script/PlayerAttackZone.gd" type="Script" id=9]
+[ext_resource path="res://assets/enemies/Skeleton/script/hitbox.gd" type="Script" id=10]
 
 [sub_resource type="CapsuleShape2D" id=1]
 height = 8.71713
@@ -42,6 +43,18 @@ tracks/1/keys = {
 "args": [  ],
 "method": "attack_finished"
 } ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("hitbox/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -107,47 +120,52 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
 }
 
-[sub_resource type="CircleShape2D" id=6]
-radius = 93.0544
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 61.2852, 141.841 )
 
-[sub_resource type="CircleShape2D" id=7]
-radius = 28.7239
+[sub_resource type="CapsuleShape2D" id=11]
+radius = 17.3787
+height = 45.7782
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 10.6747
 height = 6.24835
 
+[sub_resource type="CapsuleShape2D" id=9]
+radius = 10.7054
+height = 8.83867
+
 [node name="Skeleton" type="KinematicBody2D"]
 script = ExtResource( 6 )
 
 [node name="Stats" parent="." instance=ExtResource( 8 )]
+Damage = 15
 MaxSpeed = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -4.00452, 2.66968 )
 shape = SubResource( 1 )
 
 [node name="sprites" type="Node2D" parent="."]
 
 [node name="run" type="Sprite" parent="sprites"]
 visible = false
-position = Vector2( 1.4859, -1.11005 )
+position = Vector2( 3.78403, -1.68179 )
 texture = ExtResource( 5 )
 hframes = 13
 frame = 11
 
 [node name="death" type="Sprite" parent="sprites"]
 visible = false
-position = Vector2( -5.2973, 0 )
+position = Vector2( -0.0416946, -1.47157 )
 texture = ExtResource( 1 )
 hframes = 15
 frame = 14
 
 [node name="attack" type="Sprite" parent="sprites"]
-position = Vector2( 7.94598, -3.17839 )
+position = Vector2( 11.9402, -4.43973 )
 texture = ExtResource( 3 )
 hframes = 18
-frame = 4
+frame = 9
 
 [node name="Skeleton Hit" type="Sprite" parent="sprites"]
 visible = false
@@ -155,7 +173,7 @@ texture = ExtResource( 4 )
 
 [node name="idle" type="Sprite" parent="sprites"]
 visible = false
-position = Vector2( 1.41422, -0.353554 )
+position = Vector2( 5.40848, -2.03535 )
 texture = ExtResource( 2 )
 hframes = 11
 frame = 10
@@ -173,26 +191,38 @@ collision_mask = 0
 script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectionZone"]
-position = Vector2( -3.88909, 1.59099 )
-shape = SubResource( 6 )
+position = Vector2( 50.7691, -21.9541 )
+rotation = 1.5708
+shape = SubResource( 10 )
 
 [node name="PlayerAttackZone" type="Area2D" parent="."]
-visible = false
 collision_layer = 64
 collision_mask = 0
 script = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAttackZone"]
-position = Vector2( -3.8891, 2.12132 )
-shape = SubResource( 7 )
+position = Vector2( 0.3609, 0.12132 )
+rotation = 1.5708
+shape = SubResource( 11 )
 
 [node name="hurtBox" type="Area2D" parent="."]
+visible = false
 collision_layer = 1024
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtBox"]
 position = Vector2( -4.24265, 2.47487 )
 shape = SubResource( 8 )
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2048
+script = ExtResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2( 22.0735, -1.26136 )
+shape = SubResource( 9 )
+disabled = true
 [connection signal="body_entered" from="PlayerDetectionZone" to="PlayerDetectionZone" method="_on_PlayerDetectionZone_body_entered"]
 [connection signal="body_exited" from="PlayerDetectionZone" to="PlayerDetectionZone" method="_on_PlayerDetectionZone_body_exited"]
 [connection signal="body_entered" from="PlayerAttackZone" to="PlayerAttackZone" method="_on_PlayerAttackZone_body_entered"]

@@ -68,6 +68,7 @@ attack={
 2d_physics/layer_1="Player"
 2d_physics/layer_2="World"
 2d_physics/layer_3="Item Drop"
+2d_physics/layer_4="event"
 2d_physics/layer_6="Detected Player"
 2d_physics/layer_7="Attack Player"
 2d_physics/layer_11="Player Attack"

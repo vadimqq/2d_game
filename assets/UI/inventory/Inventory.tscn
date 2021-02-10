@@ -162,6 +162,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="DoubleEdgedBackground/TextureRect/VBoxContainer/MainElements/Tabs/Armor/Armor"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 1.33484
+margin_right = 1.33484
 custom_fonts/font = SubResource( 2 )
 text = "Armor
 "
