@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/UI/playerInfo/script/Bars.gd" type="Script" id=2]
+[ext_resource path="res://assets/font/ArchitectsDaughter-Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.615686, 0.027451, 0.027451, 1 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.552941, 0.505882, 0.00784314, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.403922, 0.0784314, 0.0784314, 1 )
+
+[sub_resource type="DynamicFont" id=5]
+
+[node name="Bars" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hp" type="ProgressBar" parent="."]
+anchor_right = 1.0
+margin_left = 15.0
+margin_top = 15.0
+margin_right = -865.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 25 )
+size_flags_vertical = 1
+custom_styles/fg = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+value = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="endurence" type="ProgressBar" parent="."]
+anchor_right = 1.0
+margin_left = 15.0
+margin_top = 50.0
+margin_right = -865.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 400, 25 )
+size_flags_vertical = 1
+custom_styles/fg = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+value = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EXP" type="ProgressBar" parent="."]
+anchor_right = 1.0
+margin_left = 15.0
+margin_top = 84.0
+margin_right = -665.0
+margin_bottom = 94.0
+rect_min_size = Vector2( 600, 10 )
+size_flags_vertical = 1
+custom_styles/fg = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+value = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

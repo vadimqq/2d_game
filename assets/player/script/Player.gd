@@ -1,9 +1,12 @@
 extends "res://assets/script/physics.gd"
 
-var dashSpeed = 500
-var endurence = 100
 onready var animation = get_node("hero_1/AnimationPlayer")
 onready var sprite = get_node("hero_1")
+onready var collisionBody = get_node("CollisionShape2D")
+onready var stats = get_node("Stats")
+onready var hitbox = get_node("hitboxPivot")
+onready var sword = get_node("hitboxPivot/hitbox")
+
 enum {
 	MOVE,
 	JUMP,
@@ -13,13 +16,18 @@ enum {
 	ATTACK_2,
 	DASH
 }
+
 var state = MOVE
+var dashSpeed = 500
+var endurence = 100
+
+signal change_endurence
 
 func _ready():
-	pass
+	sword.damage = stats.Damage
 
 func _process(delta):
-	_MotionStop()
+	_MotionStop(stats.MaxSpeed)
 	match state:
 		MOVE:
 			move_state()
@@ -54,7 +62,8 @@ func move_state():
 		if is_on_floor():
 			state = JUMP
 	if Input.is_action_just_pressed("dash"):
-		state = DASH
+		if endurence > 20:
+			state = DASH
 	if Input.is_action_just_pressed("attack"):
 		if endurence > 30:
 			state = ATTACK_1
@@ -70,6 +79,12 @@ func jump_state():
 	animation.play("jump")
 
 func fly_state():
+	if Input.is_action_pressed("run_right"):
+		_MotionRight()
+		sprite.flip_h = false
+	elif Input.is_action_pressed("run_left"):
+		_MotionLeft()
+		sprite.flip_h = true
 	if !is_on_floor():
 		if Motion.y < 0:
 			animation.play("fly")
@@ -80,6 +95,10 @@ func fly_state():
 
 func attack_1_state():
 	Motion.x = lerp(Motion.x, 0 , 0.2)
+	if sprite.flip_h == true:
+		hitbox.scale.x = -1
+	else:
+		hitbox.scale.x = 1
 	animation.play("attack_1")
 
 func attack_2_state():
@@ -87,6 +106,8 @@ func attack_2_state():
 
 #Вызовы в конец анимаци
 func dash_finished():
+	endurence -= 20
+	emit_signal("change_endurence", endurence)
 	state = MOVE
 
 func jump_finished():
@@ -96,6 +117,7 @@ func jump_finished():
 #Система боя
 func attack_1_finished():
 	endurence -= 30
+	emit_signal("change_endurence", endurence)
 	if Input.is_action_pressed("attack"):
 		if endurence > 60:
 			state = ATTACK_2
@@ -106,6 +128,7 @@ func attack_1_finished():
 
 func attack_2_finished():
 	endurence -= 60
+	emit_signal("change_endurence", endurence)
 	state = MOVE
 
 #Востановление выносливости
@@ -113,5 +136,6 @@ func reg_endurence():
 	if endurence < 100:
 		yield(get_tree().create_timer(1.0), "timeout")
 		endurence += 0.5
+		emit_signal("change_endurence", endurence)
 	if endurence > 100:
 		endurence = 100

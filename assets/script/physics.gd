@@ -5,7 +5,6 @@ var Gravity = 25
 var MaxFallSpeed = 500
 var Accel = 20
 var Motion = Vector2()
-var MaxSpeed = 200
 var JumpForce = 600
 
 
@@ -17,7 +16,7 @@ func _physics_process(delta):
 		
 	Motion = move_and_slide(Motion, Up)
 
-func _MotionStop():
+func _MotionStop(MaxSpeed):
 	Motion.x = clamp(Motion.x, -MaxSpeed, MaxSpeed)
 
 func _MotionRight():

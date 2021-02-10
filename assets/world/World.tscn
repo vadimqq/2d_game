@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/world/Lvl_1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/UI/playerInfo/Bars.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/enemies/Skeleton/Skeleton.tscn" type="PackedScene" id=4]
 
 [node name="World" type="Node2D"]
 
@@ -9,4 +11,27 @@
 position = Vector2( 147.043, 385.004 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 246, 307 )
+position = Vector2( 246, 350.727 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2( 70.6354, -163.134 )
+current = true
+zoom = Vector2( 0.8, 0.8 )
+
+[node name="Bars" parent="Player/Camera2D" instance=ExtResource( 3 )]
+margin_left = -507.901
+margin_top = -282.541
+margin_right = -507.901
+margin_bottom = -282.541
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="Skeleton" parent="enemies" instance=ExtResource( 4 )]
+position = Vector2( 745.698, 182.931 )
+scale = Vector2( 2, 2 )
+
+[node name="Skeleton2" parent="enemies" instance=ExtResource( 4 )]
+position = Vector2( 959.244, 154.647 )
+scale = Vector2( 2, 2 )
+[connection signal="change_endurence" from="Player" to="Player/Camera2D/Bars" method="_on_Player_change_endurence"]
