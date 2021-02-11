@@ -1,17 +1,20 @@
-extends KinematicBody2D
+extends Node2D
 
-var Up = Vector2(0, -1)
-var MaxSpeed = -50
-var Accel = 20
-var Motion = Vector2()
+var step = 0
+var radius = 192
+export var move_to = Vector2.RIGHT * 192
+export var speed = 100.0
 
-# Called when the node enters the scene tree for the first time.
+const IDLE_DURATION = 1.0
+
+onready var platform = get_node("Platform")
+onready var tween = get_node("MoveTween")
+
 func _ready():
-	pass # Replace with function body.
+	_init_tween()
 
-func _process(delta):
-	Motion.y -= Accel
-	if Motion.y < MaxSpeed:
-		Motion.y = MaxSpeed
-		
-	Motion = move_and_slide(Motion, Up)
+func _init_tween():
+	var duration = move_to.length() / float(speed)
+	tween.interpolate_property(platform, "position", Vector2.ZERO, move_to, duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, IDLE_DURATION)
+	tween.interpolate_property(platform, "position", move_to, Vector2.ZERO, duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, duration + IDLE_DURATION * 2)
+	tween.start()

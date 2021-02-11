@@ -120,12 +120,12 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
 }
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 61.2852, 141.841 )
 
-[sub_resource type="CapsuleShape2D" id=11]
+[sub_resource type="CapsuleShape2D" id=7]
 radius = 17.3787
-height = 45.7782
+height = 29.7108
 
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 10.6747
@@ -139,7 +139,7 @@ height = 8.83867
 script = ExtResource( 6 )
 
 [node name="Stats" parent="." instance=ExtResource( 8 )]
-Damage = 15
+Damage = 35
 MaxSpeed = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -193,7 +193,7 @@ script = ExtResource( 7 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectionZone"]
 position = Vector2( 50.7691, -21.9541 )
 rotation = 1.5708
-shape = SubResource( 10 )
+shape = SubResource( 6 )
 
 [node name="PlayerAttackZone" type="Area2D" parent="."]
 collision_layer = 64
@@ -203,7 +203,7 @@ script = ExtResource( 9 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAttackZone"]
 position = Vector2( 0.3609, 0.12132 )
 rotation = 1.5708
-shape = SubResource( 11 )
+shape = SubResource( 7 )
 
 [node name="hurtBox" type="Area2D" parent="."]
 visible = false

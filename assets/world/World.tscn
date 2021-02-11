@@ -9,8 +9,10 @@
 [node name="World" type="Node2D"]
 
 [node name="elevator" parent="." instance=ExtResource( 5 )]
-position = Vector2( 396.775, 356.069 )
+position = Vector2( 2801.77, 347.069 )
 scale = Vector2( 0.5, 0.5 )
+z_index = 1
+move_to = Vector2( 0, -730 )
 
 [node name="Lvl_1" parent="." instance=ExtResource( 1 )]
 position = Vector2( 147.043, 385.004 )
@@ -33,11 +35,28 @@ rect_scale = Vector2( 0.5, 0.5 )
 [node name="enemies" type="Node2D" parent="."]
 
 [node name="Skeleton" parent="enemies" instance=ExtResource( 4 )]
-position = Vector2( 745.698, 182.931 )
+position = Vector2( 964.698, 349.931 )
+scale = Vector2( 2, 2 )
+
+[node name="Skeleton3" parent="enemies" instance=ExtResource( 4 )]
+position = Vector2( 1623.47, 257.862 )
+scale = Vector2( 2, 2 )
+
+[node name="Skeleton5" parent="enemies" instance=ExtResource( 4 )]
+position = Vector2( 2902.91, -54.8563 )
+scale = Vector2( 2, 2 )
+
+[node name="Skeleton6" parent="enemies" instance=ExtResource( 4 )]
+position = Vector2( 2221.92, 337.232 )
+scale = Vector2( 2, 2 )
+
+[node name="Skeleton4" parent="enemies" instance=ExtResource( 4 )]
+position = Vector2( 951.999, 143.569 )
 scale = Vector2( 2, 2 )
 
 [node name="Skeleton2" parent="enemies" instance=ExtResource( 4 )]
-position = Vector2( 959.244, 154.647 )
+position = Vector2( 688.244, 243.647 )
 scale = Vector2( 2, 2 )
 [connection signal="change_HP" from="Player" to="Player/Camera2D/Bars" method="_on_Player_change_HP"]
 [connection signal="change_endurence" from="Player" to="Player/Camera2D/Bars" method="_on_Player_change_endurence"]
+[connection signal="regen_HP" from="Player" to="Player/Camera2D/Bars" method="_on_Player_regen_HP"]

@@ -14,7 +14,8 @@ enum {
 	FLY,
 	ATTACK_1,
 	ATTACK_2,
-	DASH
+	DASH,
+	DEATH
 }
 enum {
 	REGEN,
@@ -25,11 +26,15 @@ var state = MOVE
 var endurence_state = REGEN
 var dashSpeed = 500
 var endurence = 100
+var starting_positon
+
 signal change_endurence
 signal change_HP
+signal regen_HP
 
 func _ready():
 	sword.damage = stats.Damage
+	starting_positon = position
 
 func _process(delta):
 	_MotionStop(stats.MaxSpeed)
@@ -48,6 +53,8 @@ func _process(delta):
 			dash_state()
 		FLY:
 			fly_state()
+		DEATH:
+			death_state()
 	match endurence_state:
 		REGEN:
 			regen_endurence_state()
@@ -115,6 +122,9 @@ func attack_1_state():
 func attack_2_state():
 	animation.play("attack_2")
 
+func death_state():
+	animation.play("death")
+
 func waste_endurence_state():
 	yield(get_tree().create_timer(2.0), "timeout")
 	endurence_state = REGEN
@@ -147,6 +157,14 @@ func attack_1_finished():
 func attack_2_finished():
 	state = MOVE
 
+func death_finished():
+	animation.stop()
+	#yield(get_tree().create_timer(2.0), "timeout")
+	position = starting_positon
+	HP = stats.MaxHealth
+	emit_signal("regen_HP", stats.MaxHealth)
+	state = MOVE
+
 func waste_endurence(value):
 	endurence -= value
 	endurence_state = WASTE
@@ -154,6 +172,7 @@ func waste_endurence(value):
 func _on_hurtBox_area_entered(area):
 	HP -= area.damage
 	var value_percent = (1000 / stats.MaxHealth * HP) / 10
-	emit_signal("change_HP", value_percent)
-
-
+	if HP <= 0:
+		state = DEATH
+	else:
+		emit_signal("change_HP", value_percent)

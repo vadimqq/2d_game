@@ -160,6 +160,33 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=7]
 resource_name = "death"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 59, 60, 61, 62 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "death_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=8]
 length = 0.5
@@ -277,7 +304,7 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 vframes = 12
 hframes = 10
-frame = 54
+frame = 62
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="hero_1"]
 anims/attack_1 = SubResource( 2 )
