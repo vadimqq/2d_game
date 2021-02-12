@@ -60,6 +60,8 @@ func _process(delta):
 			regen_endurence_state()
 		WASTE:
 			waste_endurence_state()
+
+
 #Функции состояний игрока
 func move_state():
 	if Input.is_action_pressed("run_right"):
@@ -87,10 +89,18 @@ func move_state():
 			state = ATTACK_1
 
 func dash_state():
-	if sprite. flip_h == true:
+	sword.get_node("CollisionShape2D").disabled = true
+	if Input.is_action_pressed("run_left"):
+		sprite.flip_h = true
 		Motion.x = -dashSpeed
-	elif sprite. flip_h == false:
+	elif Input.is_action_pressed("run_right"):
+		sprite.flip_h = false
 		Motion.x = dashSpeed
+	else:
+		if sprite.flip_h == true:
+			Motion.x = -dashSpeed
+		elif sprite.flip_h == false:
+			Motion.x = dashSpeed
 	animation.play("dash")
 
 func jump_state():
@@ -118,9 +128,17 @@ func attack_1_state():
 	else:
 		hitbox.scale.x = 1
 	animation.play("attack_1")
+	if Input.is_action_just_pressed("dash"):
+		if endurence > 20:
+			waste_endurence(20)
+			state = DASH
 
 func attack_2_state():
 	animation.play("attack_2")
+	if Input.is_action_just_pressed("dash"):
+		if endurence > 20:
+			waste_endurence(20)
+			state = DASH
 
 func death_state():
 	animation.play("death")
@@ -135,6 +153,7 @@ func regen_endurence_state():
 	elif endurence >= 100:
 		endurence = 100
 
+
 #Вызовы в конец анимаци
 func dash_finished():
 	state = MOVE
@@ -142,6 +161,7 @@ func dash_finished():
 func jump_finished():
 	Motion.y = -JumpForce
 	state = FLY
+
 
 #Система боя
 func attack_1_finished():
@@ -159,7 +179,6 @@ func attack_2_finished():
 
 func death_finished():
 	animation.stop()
-	#yield(get_tree().create_timer(2.0), "timeout")
 	position = starting_positon
 	HP = stats.MaxHealth
 	emit_signal("regen_HP", stats.MaxHealth)
@@ -176,3 +195,12 @@ func _on_hurtBox_area_entered(area):
 		state = DEATH
 	else:
 		emit_signal("change_HP", value_percent)
+
+
+func _on_hitbox_area_entered(area):
+	if stats.CriticalChance < randi() % 100:
+		sword.damage = float(stats.Damage) / 100 * stats.CriticalDamage
+		sword.type_damage = "critical"
+	else:
+		sword.damage = stats.Damage
+		sword.type_damage = "damage"

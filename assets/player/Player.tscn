@@ -304,7 +304,7 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 vframes = 12
 hframes = 10
-frame = 62
+frame = 42
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="hero_1"]
 anims/attack_1 = SubResource( 2 )
@@ -341,4 +341,5 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtBox"]
 shape = SubResource( 14 )
+[connection signal="area_entered" from="hitboxPivot/hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="hurtBox" to="." method="_on_hurtBox_area_entered"]

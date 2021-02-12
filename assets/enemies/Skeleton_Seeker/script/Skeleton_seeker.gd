@@ -1,7 +1,5 @@
 extends "res://assets/script/physics.gd"
 
-var floating_text = preload("res://assets/UI/floatingText/Floating text.tscn")
-
 onready var sprite = get_node("sprites")
 onready var animation = get_node("AnimationPlayer")
 onready var playerDetectionZone = get_node("PlayerDetectionZone")
@@ -17,7 +15,7 @@ enum {
 	DEATH
 }
 
-var state = IDLE
+var state = WANDER
 var CD_attack = false
 
 
@@ -26,6 +24,8 @@ func _ready():
 
 func _process(delta):
 	_MotionStop(stats.MaxSpeed)
+	if stats.MaxHealth <= 0:
+		state = DEATH
 	match state:
 		IDLE:
 			idle_state()
@@ -36,7 +36,8 @@ func _process(delta):
 		ATTACK:
 			attack_state()
 		WANDER:
-			pass
+			wander_state()
+			seek_player()
 		DEATH:
 			death_state()
 
@@ -47,6 +48,8 @@ func seek_player():
 		state = IDLE
 		if CD_attack == false:
 			state = ATTACK
+	elif playerDetectionZone.can_see_player() and state == WANDER:
+		animation.play("spawn")
 	elif playerDetectionZone.can_see_player():
 		state = CHASE
 
@@ -80,14 +83,15 @@ func attack_state():
 	sprite_change("attack")
 	Motion.x = lerp(Motion.x, 0 , 0.2)
 	var player = playerDetectionZone.player
-	if player != null:
-		var direction = (player.global_position - global_position).normalized()
-		if direction.x > 0:
-			animation.play("attack")
-		if direction.x < 0:
-			animation.play("attack")
+	if player != null :
+		animation.play("attack")
 	else:
 		state = IDLE
+
+func wander_state():
+	if !playerDetectionZone.can_see_player():
+		sprite_change("spawn")
+		animation.stop()
 
 func death_state():
 	sprite_change("death")
@@ -108,13 +112,8 @@ func attack_finished():
 func death_finished():
 	queue_free()
 
+func spawn_finished():
+	state = CHASE
+
 func _on_hurtBox_area_entered(area):
 	stats.MaxHealth -= area.damage
-	if stats.MaxHealth <= 0:
-		state = DEATH
-
-	var text = floating_text.instance()
-	text.amount = area.damage
-	text.type = area.type_damage
-	add_child(text)
-	
